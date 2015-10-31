@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "start": "node ServeUser"
+  },
+  "dependencies": {
+    "nedb": "^1.2.1",
+    "request": "^2.58.0",
+    "xmldoc": "^0.3.1"
+  }
+}
