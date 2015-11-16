@@ -3,7 +3,7 @@
     "start": "node ServeUser"
   },
   "dependencies": {
-    "nedb": "^1.2.1",
+    "nedb": "^1.3.0",
     "request": "^2.58.0",
     "xmldoc": "^0.3.1"
   }

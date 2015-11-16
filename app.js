@@ -3,12 +3,7 @@ var request = require('request');
 var et = require('elementtree');
 var fs = require('fs');
 var uri = 'http://backend.deviantart.com/rss.xml?q=boost%3Apopular+in%3Adigitalart%2Ffractals+threat&amp;type=deviation';
-//http://backend.deviantart.com/rss.xml?q=boost%3Apopular+in%3Adigitalart%2Ffractals+calm&amp;type=deviation
-//http://backend.deviantart.com/rss.xml?q=boost%3Apopular+in%3Adigitalart%2Fpaintings%2Ffantasy+calm&amp;type=deviation
-//http://backend.deviantart.com/rss.xml?q=boost%3Apopular+in%3Adigitalart%2Fpaintings+calm&amp;type=deviation
-//http://backend.deviantart.com/rss.xml?q=boost%3Apopular+in%3Adigitalart%2Fmixedmed%2Fabstract+calm&amp;type=deviation
-//http://backend.deviantart.com/rss.xml?q=boost%3Apopular+in%3Adigitalart%2Ffractals+calm+emotion&amp;type=deviation
-//http://backend.deviantart.com/rss.xml?q=boost%3Apopular+in%3Adigitalart+calm+emotion&amp;type=deviation
+
 request({
   method: 'GET',
   uri: uri,

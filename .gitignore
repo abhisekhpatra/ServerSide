@@ -4,3 +4,4 @@ Colors.db
 npm-debug.log
 something.xml
 photos
+*.db
