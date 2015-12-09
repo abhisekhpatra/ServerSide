@@ -62,6 +62,8 @@ app.post('/colors', function (req, res) {
 
           Details ["Username"] =uname;
           Details ["firstTime"] ="false";
+          Details ["link"] =docs[0].DataType;
+
           Obj.push(Details);
           res.send(JSON.stringify(Obj));
         };
@@ -70,16 +72,34 @@ app.post('/colors', function (req, res) {
 
   });
 
+  function shuffle(o) {
+      for(var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+      return o;
+  };
 
   app.post('/buildTaskMap', function (req, res) {
 console.log("building task map------------------------------------>");
+var userNo;
+var Training;
+var jsonData=req.body;
+var BlockData=[1,2];
+shuffle(BlockData);
+db.users.count({}, function (err, count) {
+  console.log("Number of users----------------------------------------"+count);
+    var taskmap=map.buildMap(jsonData[0],count,BlockData);
+    if(BlockData[0]==1){
+      Training="TrainingCategorical.html"
+    }else{
+      Training="TrainingDiverging.html"
+    }
+        db.users.update({ UserName:jsonData[0].Username }, { $set: { DataType: Training} }, {},function (err, numReplaced) {
+        console.log("updated user----------------------------->" + numReplaced);
 
-    var jsonData=req.body;
-    var tableCount;
-    var taskmap=map.buildMap(jsonData[0]);
+        });
     Obj=[];
     Details = {};
     Details ["Username"] =jsonData[0].Username;
+    Details ["Training"] =Training;
     Obj.push(Details);
 
     for (var i=0; i<taskmap.length; i++){
@@ -88,6 +108,12 @@ console.log("building task map------------------------------------>");
     }
     res.send(JSON.stringify(Obj));
     console.log("done assigining task map------------------------------------>");
+
+
+    });
+
+
+
   });
 
 
