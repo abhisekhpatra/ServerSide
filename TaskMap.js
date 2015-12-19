@@ -5,7 +5,7 @@ function shuffle(o) {
     return o;
 };
 function isEven(n) {
-  if(n=1)
+  if(n==1)
   return 1;
   else
   return n % 2 ;

@@ -78,7 +78,8 @@ app.post('/colors', function (req, res) {
   };
 
   function isEven(n) {
-    if(n=1)
+    console.log(n+"-----------is even")
+    if(n==1)
     return 1;
     else
     return n % 2 ;
@@ -89,16 +90,17 @@ console.log("building task map------------------------------------>");
 var userNo;
 var Training;
 var jsonData=req.body;
-var BlockData;
+
 
 db.users.count({}, function (err, count) {
   var flag=isEven(count);
-  if(flag===0){
+  var BlockData;
+  if(flag==0){
     BlockData=[1,2];
   }else{
     BlockData=[2,1];
   }
-  console.log("Number of users----------------------------------------"+count);
+  console.log("Number of users----------------------------------------"+count+"------flag------"+flag);
     var taskmap=map.buildMap(jsonData[0],count,BlockData);
     if(BlockData[0]==1){
       Training="TrainingCategorical.html"
