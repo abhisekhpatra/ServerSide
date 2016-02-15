@@ -6,6 +6,8 @@ var bodyParser = require('body-parser');
 var app = express();
 var Datastore = require('nedb'),
 db = {};
+counter=1;
+flag=0;
 //db.users = new Datastore({filename: 'users.db', autoload: true});
 var databaseFile = 'Colors.db';
 var userFile = 'User.db';
@@ -93,19 +95,31 @@ var jsonData=req.body;
 
 
 db.users.count({}, function (err, count) {
-  var flag=isEven(count);
-  var BlockData;
-  if(flag==0){
-    BlockData=[1,2];
-  }else{
-    BlockData=[2,1];
-  }
+
+  if(counter===1){
+    flag=1;
+    counter++;
+  }else if(counter===4){
+    flag=4
+    counter=1;
+}else{
+  flag=counter;
+  counter++;
+}
+
   console.log("Number of users----------------------------------------"+count+"------flag------"+flag);
-    var taskmap=map.buildMap(jsonData[0],count,BlockData);
-    if(BlockData[0]==1){
-      Training="TrainingCategorical.html"
-    }else{
-      Training="TrainingDiverging.html"
+    var taskmap=map.buildMap(jsonData[0],flag);
+    if(flag===1){
+      Training="Training_Map_Categorical.html"
+    }else if(flag===2)
+    {
+      Training="Training_Bar_Categorical.html"
+    }else if(flag===3)
+    {
+      Training="Training_Map_Diverging.html"
+    }else if(flag===4)
+    {
+      Training="Training_Bar_Diverging.html"
     }
         db.users.update({ UserName:jsonData[0].Username }, { $set: { DataType: Training} }, {},function (err, numReplaced) {
         console.log("updated user----------------------------->" + numReplaced);
@@ -147,14 +161,6 @@ db.users.count({}, function (err, count) {
 });
       console.log("done deleting user------------------------------------>");
     });
-
-
-
-
-
-
-
-
 
 
 
