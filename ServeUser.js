@@ -7,6 +7,22 @@ var app = express();
 var d3 = require("d3");
 var Datastore = require('nedb'),
 db = {};
+
+
+Array.prototype.shuffle = function() {
+    var input = this;
+
+    for (var i = input.length-1; i >=0; i--) {
+
+        var randomIndex = Math.floor(Math.random()*(i+1));
+        var itemAtIndex = input[randomIndex];
+
+        input[randomIndex] = input[i];
+        input[i] = itemAtIndex;
+    }
+    return input;
+}
+
 //db.users = new Datastore({filename: 'users.db', autoload: true});
 var databaseFile = 'Colors.db';
 var userFile = 'User.db';
@@ -175,17 +191,13 @@ console.log("InUpdate finding next task---------------------------------------->
 
 });
 
+
 app.get('/colorPalette', function (req, res) {
 console.log("test");
 
 
 });
 
-
-
-app.listen(3000, function () {
-    console.log(this.address());
-  });
 
 
 
@@ -543,16 +555,9 @@ if(SubBlockData[j]==1)
 
 
 
-  Array.prototype.shuffle = function() {
-      var input = this;
 
-      for (var i = input.length-1; i >=0; i--) {
 
-          var randomIndex = Math.floor(Math.random()*(i+1));
-          var itemAtIndex = input[randomIndex];
 
-          input[randomIndex] = input[i];
-          input[i] = itemAtIndex;
-      }
-      return input;
-  }
+  app.listen(3000, function () {
+      console.log(this.address());
+    });
