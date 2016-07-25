@@ -340,7 +340,25 @@ var count=1;
             }
 
            }
+           db.users.update({ UserName:jsonData[0].Username }, { $set: { DataType: Training} }, {},function (err, numReplaced) {
+               console.log("updated user----------------------------->" + numReplaced);
+
+               Obj=[];
+               Details = {};
+               Details ["Username"] =jsonData[0].Username;
+               Details ["Training"] =Training;
+               Obj.push(Details);
+
+               for (var i=0; i<taskmap.length; i++){
+                   console.log("---------------logging Taskmaps"+taskmap[i]);
+                 db.taskmap.insert(taskmap[i]);
+
+               }
+                 res.send(JSON.stringify(Obj));
+
+               });
+
            console.log(TaskJson.length+"---------task map length"+userdetails.Username);
-           
+
 });
 return TaskJson;};
