@@ -4,10 +4,9 @@ var fs = require('fs');
 var path = require('path');
 var bodyParser = require('body-parser');
 var app = express();
+var d3 = require("d3");
 var Datastore = require('nedb'),
 db = {};
-counter=1;
-flag=0;
 //db.users = new Datastore({filename: 'users.db', autoload: true});
 var databaseFile = 'Colors.db';
 var userFile = 'User.db';
@@ -41,6 +40,7 @@ app.post('/colors', function (req, res) {
 
   app.post('/registerUser', function (req, res) {
     console.log("registering---------------------------------------------->");
+
     var jsonData=req.body;
 
     var uname=jsonData[0].UserName;
@@ -51,7 +51,6 @@ app.post('/colors', function (req, res) {
 
           Obj=[];
           Details = {};
-
           Details ["Username"] =uname;
           Details ["firstTime"] ="true";
           Obj.push(Details);
@@ -92,55 +91,29 @@ console.log("building task map------------------------------------>");
 var userNo;
 var Training;
 var jsonData=req.body;
+var taskmap=map.buildMap(jsonData[0]);
+Training="Training.html"
 
-
-db.users.count({}, function (err, count) {
-
-  if(counter===1){
-    flag=1;
-    counter++;
-  }else if(counter===4){
-    flag=4
-    counter=1;
-}else{
-  flag=counter;
-  counter++;
-}
-
-  console.log("Number of users----------------------------------------"+count+"------flag------"+flag);
-    var taskmap=map.buildMap(jsonData[0],flag);
-    if(flag===1){
-      Training="Training_Map_Categorical.html"
-    }else if(flag===2)
-    {
-      Training="Training_Bar_Categorical.html"
-    }else if(flag===3)
-    {
-      Training="Training_Map_Diverging.html"
-    }else if(flag===4)
-    {
-      Training="Training_Bar_Diverging.html"
-    }
-        db.users.update({ UserName:jsonData[0].Username }, { $set: { DataType: Training} }, {},function (err, numReplaced) {
+    db.users.update({ UserName:jsonData[0].Username }, { $set: { DataType: Training} }, {},function (err, numReplaced) {
         console.log("updated user----------------------------->" + numReplaced);
 
+        Obj=[];
+        Details = {};
+        Details ["Username"] =jsonData[0].Username;
+        Details ["Training"] =Training;
+        Obj.push(Details);
+
+        for (var i=0; i<taskmap.length; i++){
+            console.log("---------------logging Taskmaps"+taskmap[i]);
+          db.taskmap.insert(taskmap[i]);
+
+        }
+          res.send(JSON.stringify(Obj));
+
         });
-    Obj=[];
-    Details = {};
-    Details ["Username"] =jsonData[0].Username;
-    Details ["Training"] =Training;
-    Obj.push(Details);
 
-    for (var i=0; i<taskmap.length; i++){
-      //  console.log(jsonData[i]);
-      db.taskmap.insert(taskmap[i]);
-    }
-    res.send(JSON.stringify(Obj));
+
     console.log("done assigining task map------------------------------------>");
-
-
-    });
-
 
 
   });
@@ -183,7 +156,7 @@ db.taskmap.find({ Username: uname, taskDone:'false' }).sort({id:1}).limit(1).exe
     UpdateDetails ["id"] = 20;
     UpdateDetails ["Username"] =uname;
     UpdateDetails ["link"] ="Thankyou.html";
-    updateObj.push(UpdateDetails);
+    updateObj.push(UpdateDetails);1
     res.send(JSON.stringify(updateObj));
   }else{filter=docs;
   res.send(JSON.stringify(filter));
@@ -232,6 +205,11 @@ console.log("InUpdate finding next task---------------------------------------->
 
 });
 
+app.get('/colorPalette', function (req, res) {
+console.log("test");
+
+
+});
 
 
 
